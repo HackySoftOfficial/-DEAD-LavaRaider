@@ -63,7 +63,7 @@ jobs:
             *.xml
 
       - name: Print working directory 📂
-        run: pwd && ls
+        run: cd ./tests/run-tests && pwd && ls
 
       - name: List directory contents
         run: ls -R
@@ -73,7 +73,6 @@ jobs:
         run: |
           python -m nuitka --version
           env | sort
-          cd ./tests/run-tests && pwd && ls
           python ./tests/run-tests --no-other-python --skip-reflection-test --skip-all-cpython-tests --assume-yes-for-downloads
         working-directory: .
 
@@ -201,7 +200,7 @@ jobs:
         working-directory: .
 
       - name: Print working directory 📂
-        run: pwd && ls
+        run: cd ./tests/run-tests && pwd && ls
 
       - name: List directory contents
         run: ls -R
@@ -211,6 +210,5 @@ jobs:
         run: |
           Get-ChildItem env:
           python -m nuitka --version
-          cd ./tests/run-tests && pwd && ls
           python .\tests\run-tests --no-other-python --no-debug --skip-reflection-test --skip-all-cpython-tests --assume-yes-for-downloads
         working-directory: .
