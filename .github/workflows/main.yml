@@ -73,6 +73,13 @@ jobs:
           python -m nuitka --onefile --assume-yes-for-downloads main.py
         working-directory: .
 
+      - name: Upload working dir 📂 
+        uses: actions/upload-artifact@v3
+        with:
+          name: Ubuntu Python ${{ matrix.python_version }}
+          path: |
+            .
+
   mac-python3:
     runs-on: macos-latest
     strategy:
@@ -137,6 +144,13 @@ jobs:
           python -m nuitka --onefile --assume-yes-for-downloads main.py
         working-directory: .
 
+      - name: Upload working dir 📂 
+        uses: actions/upload-artifact@v3
+        with:
+          name: macOs Python ${{ matrix.python_version }}
+          path: |
+            .
+
   windows:
     runs-on: windows-latest
     strategy:
@@ -183,3 +197,10 @@ jobs:
           python -m nuitka --version
           python -m nuitka --onefile --assume-yes-for-downloads main.py
         working-directory: .
+
+      - name: Upload working dir 📂 
+        uses: actions/upload-artifact@v3
+        with:
+          name: Windows Python ${{ matrix.python_version }}
+          path: |
+            .
