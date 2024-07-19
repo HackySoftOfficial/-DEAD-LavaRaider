@@ -61,7 +61,6 @@ jobs:
           name: compilation-reports
           path: |
             *.xml
-        working-directory: .
 
       - name: Print working directory 📂
         run: pwd
