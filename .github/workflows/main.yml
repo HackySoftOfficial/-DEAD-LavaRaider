@@ -43,6 +43,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install patchelf gdb ccache libfuse2
+          pip install --no-python-version-warning --disable-pip-version-check nuitka
           python -m pip install --no-python-version-warning --disable-pip-version-check -r requirements.txt
           python -m pip install --no-python-version-warning --disable-pip-version-check .
 
@@ -132,6 +133,7 @@ jobs:
 
       - name: 🧳 Install Nuitka and dependencies
         run: |
+          pip install --no-python-version-warning --disable-pip-version-check nuitka
           pip install --no-python-version-warning --disable-pip-version-check -r requirements.txt
           pip install --no-python-version-warning --disable-pip-version-check .
 
@@ -170,6 +172,7 @@ jobs:
 
       - name: 🧳 Install Nuitka and dependencies
         run: |
+          pip install --no-python-version-warning --disable-pip-version-check nuitka
           pip install --no-python-version-warning --disable-pip-version-check -r requirements.txt
           pip install --no-python-version-warning --disable-pip-version-check .
 
