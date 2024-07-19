@@ -17,6 +17,7 @@ import threading
 import io
 import sys
 from contextlib import redirect_stdout
+import platform
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
@@ -63,7 +64,11 @@ with open('tokens.txt', "r") as file:
 proxies = open("proxies.txt").read().splitlines()
 proxy_count = len(proxies)
 
-ctypes.windll.kernel32.SetConsoleTitleW(f"Lava Raider | Tokens Loaded: {token_count} | Proxies Loaded: {proxy_count} | Developer by AndrexYT")
+if platform.system() == 'Windows':
+    # Windows-specific code
+    ctypes.windll.kernel32.SetConsoleTitleW(f"Lava Raider | Tokens Loaded: {token_count} | Proxies Loaded: {proxy_count} | Developed by AndrexYT")
+else:
+    print(f"Lava Raider | Tokens Loaded: {token_count} | Proxies Loaded: {proxy_count} | Developed by AndrexYT")
 
 title = """
 @@@        @@@@@@   @@@  @@@   @@@@@@   
