@@ -47,11 +47,13 @@ jobs:
           pip install --no-python-version-warning --disable-pip-version-check nuitka
           python -m pip install --no-python-version-warning --disable-pip-version-check -r requirements.txt
           python -m pip install --no-python-version-warning --disable-pip-version-check .
+        working-directory: .
 
       - name: Verbose scons output in compilation
         run: |
           python -m nuitka --module --show-scons --run --report=compilation-report-module.xml --experimental=debug-report-traceback main.py
           python -m nuitka --show-scons --run --report=compilation-report-exe.xml --experimental=debug-report-traceback main.py
+        working-directory: .
 
       - name: Archive compilation reports for empty modules
         uses: actions/upload-artifact@v3
@@ -59,14 +61,14 @@ jobs:
           name: compilation-reports
           path: |
             *.xml
+        working-directory: .
 
-      # This can be used to ssh into GitHub actions if debugging is needed.
-      # - uses: actions/checkout@v4
-      # - name: Setup upterm session
-      #   uses: lhotari/action-upterm@v1
-      #   with:
-      #     ## limits ssh access and adds the ssh public keys of the listed GitHub users
-      #     limit-access-to-users: kayhayen
+      - name: Print working directory 📂
+        run: pwd
+
+      - name: List directory contents
+        run: ls -R
+        working-directory: .
 
       - name: Run Nuitka test suite
         run: |
@@ -79,21 +81,25 @@ jobs:
         run: |
           python ./bin/check-nuitka-with-pylint
         if: matrix.python_version == '3.9'
+        working-directory: .
 
       - name: RestLint on Nuitka source code
         run: |
           python ./bin/check-nuitka-with-restlint
         if: matrix.python_version == '3.9'
+        working-directory: .
 
       - name: YamlLint on Nuitka source code
         run: |
           python ./bin/check-nuitka-with-yamllint
         if: matrix.python_version == '3.9'
+        working-directory: .
 
       - name: Codespell on Nuitka source code
         run: |
           python ./bin/check-nuitka-with-codespell
         if: matrix.python_version == '3.9'
+        working-directory: .
 
       - name: Auto-format check on Nuitka source code
         run: |
@@ -106,6 +112,7 @@ jobs:
 
           python ./bin/autoformat-nuitka-source --check-only
         if: matrix.python_version == '3.9'
+        working-directory: .
 
   mac-python3:
     runs-on: macos-latest
@@ -133,17 +140,20 @@ jobs:
           otool -L $(which python)
           otool -l $(which python)
           ls -lR $(dirname $(dirname $(which python)))
+        working-directory: .
 
       - name: 🧳 Install Nuitka and dependencies
         run: |
           pip install --no-python-version-warning --disable-pip-version-check nuitka
           pip install --no-python-version-warning --disable-pip-version-check -r requirements.txt
           pip install --no-python-version-warning --disable-pip-version-check .
+        working-directory: .
 
       - name: Verbose scons output in compilation
         run: |
           python -m nuitka --module --show-scons --run --assume-yes-for-downloads main.py
           python -m nuitka --show-scons --run --assume-yes-for-downloads main.py
+        working-directory: .
 
       - name: Run Nuitka test suite
         run: |
@@ -180,11 +190,20 @@ jobs:
           pip install --no-python-version-warning --disable-pip-version-check nuitka
           pip install --no-python-version-warning --disable-pip-version-check -r requirements.txt
           pip install --no-python-version-warning --disable-pip-version-check .
+        working-directory: .
 
       - name: Verbose scons output in compilation
         run: |
           python -m nuitka --module --show-scons --run --assume-yes-for-downloads main.py
           python -m nuitka --show-scons --run main.py
+        working-directory: .
+
+      - name: Print working directory 📂
+        run: pwd
+
+      - name: List directory contents
+        run: ls -R
+        working-directory: .
 
       - name: Run Nuitka test suite
         run: |
