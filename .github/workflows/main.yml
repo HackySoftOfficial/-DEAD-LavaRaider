@@ -73,6 +73,7 @@ jobs:
           python -m nuitka --version
           env | sort
           python ./tests/run-tests --no-other-python --skip-reflection-test --skip-all-cpython-tests --assume-yes-for-downloads
+        working-directory: .
 
       - name: PyLint on Nuitka source code
         run: |
@@ -149,6 +150,7 @@ jobs:
           python -m nuitka --version
           env | sort
           python ./tests/run-tests --no-other-python --skip-reflection-test --skip-all-cpython-tests
+        working-directory: .
 
   windows:
     runs-on: windows-latest
@@ -189,3 +191,4 @@ jobs:
           Get-ChildItem env:
           python -m nuitka --version
           python .\tests\run-tests --no-other-python --no-debug --skip-reflection-test --skip-all-cpython-tests --assume-yes-for-downloads
+        working-directory: .
