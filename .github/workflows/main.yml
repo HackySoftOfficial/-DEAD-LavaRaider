@@ -68,9 +68,9 @@ jobs:
 
       - name: Run Nuitka test suite
         run: |
-          python -m nuitka --version
-          env | sort
-          python ./tests/run-tests --no-other-python --skip-reflection-test --skip-all-cpython-tests --assume-yes-for-downloads
+          # python -m nuitka --version
+          # env | sort
+          ./tests/run-tests --no-other-python --skip-reflection-test --skip-all-cpython-tests --assume-yes-for-downloads
         working-directory: .
 
       - name: PyLint on Nuitka source code
