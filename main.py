@@ -213,7 +213,10 @@ if eula != "True":
 print(title)
 print(menu1)
 
-choice = input(f'\n' + Style('Your choice') + ' >> ')
+try:
+    choice = input(f'\n' + Style('Your choice') + ' >> ')
+except EOFError:
+    sys.exit(0)
 
 def calculateNonce(date="now"):
     if date == "now":
