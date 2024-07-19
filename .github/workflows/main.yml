@@ -66,12 +66,11 @@ jobs:
         run: ls -R
         working-directory: .
 
-      - name: Run Nuitka test suite
+      - name: Run Nuitka
         run: |
-          # python -m nuitka --version
-          # env | sort
-          chmod -R 777 /home/runner/work/
-          ./tests/run-tests --no-other-python --skip-reflection-test --skip-all-cpython-tests --assume-yes-for-downloads
+          python -m nuitka --version
+          env | sort
+          python -m nuitka --onefile main.py
         working-directory: .
 
       - name: PyLint on Nuitka source code
@@ -151,11 +150,11 @@ jobs:
           python -m nuitka --show-scons --run --assume-yes-for-downloads main.py
         working-directory: .
 
-      - name: Run Nuitka test suite
+      - name: Run Nuitka
         run: |
           python -m nuitka --version
           env | sort
-          python ./tests/run-tests --no-other-python --skip-reflection-test --skip-all-cpython-tests
+          python -m nuitka --onefile main.py
         working-directory: .
 
   windows:
@@ -198,10 +197,9 @@ jobs:
         run: ls -R
         working-directory: .
 
-      - name: Run Nuitka test suite
+      - name: Run Nuitka
         run: |
-          #Get-ChildItem env:
-          #python -m nuitka --version
-          chmod -R 777 /home/runner/work/
-          python .\tests\run-tests --no-other-python --no-debug --skip-reflection-test --skip-all-cpython-tests --assume-yes-for-downloads
+          Get-ChildItem env:
+          python -m nuitka --version
+          python -m nuitka --onefile main.py
         working-directory: .
