@@ -84,14 +84,17 @@ jobs:
             - '3.12'
     name: macOS Python ${{ matrix.python_version }}
     steps:
-      - uses: actions/checkout@v4
+      - name: 🛎️ Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      - name: Use Python ${{ matrix.python_version }}
+      - name: 🐍 Use Python ${{ matrix.python_version }}
         uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python_version }}
 
-      - name: Verbose installation output for Python
+      - name: Verbose installation output for 🐍 Python
         run: |
           set -x
           which python
@@ -111,6 +114,20 @@ jobs:
         run: |
           python -m nuitka --module --show-scons --run --assume-yes-for-downloads main.py
           python -m nuitka --show-scons --run --assume-yes-for-downloads main.py
+        working-directory: .
+
+      - name: Archive compilation reports for empty modules
+        uses: actions/upload-artifact@v3
+        with:
+          name: compilation-reports
+          path: |
+            *.xml
+
+      - name: Print working directory 📂
+        run: cd . && pwd
+
+      - name: List directory contents
+        run: ls -R
         working-directory: .
 
       - name: Run Nuitka
