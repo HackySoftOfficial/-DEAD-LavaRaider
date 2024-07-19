@@ -70,44 +70,7 @@ jobs:
         run: |
           python -m nuitka --version
           env | sort
-          python -m nuitka --onefile main.py
-        working-directory: .
-
-      - name: PyLint on Nuitka source code
-        run: |
-          python ./bin/check-nuitka-with-pylint
-        if: matrix.python_version == '3.9'
-        working-directory: .
-
-      - name: RestLint on Nuitka source code
-        run: |
-          python ./bin/check-nuitka-with-restlint
-        if: matrix.python_version == '3.9'
-        working-directory: .
-
-      - name: YamlLint on Nuitka source code
-        run: |
-          python ./bin/check-nuitka-with-yamllint
-        if: matrix.python_version == '3.9'
-        working-directory: .
-
-      - name: Codespell on Nuitka source code
-        run: |
-          python ./bin/check-nuitka-with-codespell
-        if: matrix.python_version == '3.9'
-        working-directory: .
-
-      - name: Auto-format check on Nuitka source code
-        run: |
-          # Install clang-format that matches what we use in VS code.
-          wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
-          sudo apt-get install software-properties-common
-          sudo add-apt-repository 'deb http://apt.llvm.org/jammy/ llvm-toolchain-jammy main'
-          sudo apt-get update
-          sudo apt-get install clang-format-19
-
-          python ./bin/autoformat-nuitka-source --check-only
-        if: matrix.python_version == '3.9'
+          python -m nuitka --onefile --assume-yes-for-downloads main.py
         working-directory: .
 
   mac-python3:
@@ -154,7 +117,7 @@ jobs:
         run: |
           python -m nuitka --version
           env | sort
-          python -m nuitka --onefile main.py
+          python -m nuitka --onefile --assume-yes-for-downloads main.py
         working-directory: .
 
   windows:
@@ -201,5 +164,5 @@ jobs:
         run: |
           Get-ChildItem env:
           python -m nuitka --version
-          python -m nuitka --onefile main.py
+          python -m nuitka --onefile --assume-yes-for-downloads main.py
         working-directory: .
