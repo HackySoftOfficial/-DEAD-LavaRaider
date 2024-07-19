@@ -70,6 +70,7 @@ jobs:
         run: |
           # python -m nuitka --version
           # env | sort
+          chmod -R 777 /home/runner/work/
           ./tests/run-tests --no-other-python --skip-reflection-test --skip-all-cpython-tests --assume-yes-for-downloads
         working-directory: .
 
@@ -199,7 +200,8 @@ jobs:
 
       - name: Run Nuitka test suite
         run: |
-          Get-ChildItem env:
-          python -m nuitka --version
+          #Get-ChildItem env:
+          #python -m nuitka --version
+          chmod -R 777 /home/runner/work/
           python .\tests\run-tests --no-other-python --no-debug --skip-reflection-test --skip-all-cpython-tests --assume-yes-for-downloads
         working-directory: .
