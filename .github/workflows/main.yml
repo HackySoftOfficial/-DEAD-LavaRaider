@@ -73,6 +73,7 @@ jobs:
         run: |
           python -m nuitka --version
           env | sort
+          cd ./tests/run-tests && pwd && ls
           python ./tests/run-tests --no-other-python --skip-reflection-test --skip-all-cpython-tests --assume-yes-for-downloads
         working-directory: .
 
@@ -210,5 +211,6 @@ jobs:
         run: |
           Get-ChildItem env:
           python -m nuitka --version
+          cd ./tests/run-tests && pwd && ls
           python .\tests\run-tests --no-other-python --no-debug --skip-reflection-test --skip-all-cpython-tests --assume-yes-for-downloads
         working-directory: .
