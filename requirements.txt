@@ -1,0 +1,5 @@
+pystyle
+httpx
+urllib3
+mysql-connector-python
+customtkinter
