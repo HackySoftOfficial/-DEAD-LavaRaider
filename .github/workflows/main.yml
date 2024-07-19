@@ -43,13 +43,13 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install patchelf gdb ccache libfuse2
-          python -m pip install --no-python-version-warning --disable-pip-version-check -r requirements-devel.txt
+          python -m pip install --no-python-version-warning --disable-pip-version-check -r requirements.txt
           python -m pip install --no-python-version-warning --disable-pip-version-check .
 
       - name: Verbose scons output in compilation
         run: |
-          python -m nuitka --module --show-scons --run --report=compilation-report-module.xml --experimental=debug-report-traceback tests/basics/EmptyModuleTest.py
-          python -m nuitka --show-scons --run --report=compilation-report-exe.xml --experimental=debug-report-traceback tests/basics/EmptyModuleTest.py
+          python -m nuitka --module --show-scons --run --report=compilation-report-module.xml --experimental=debug-report-traceback main.py
+          python -m nuitka --show-scons --run --report=compilation-report-exe.xml --experimental=debug-report-traceback main.py
 
       - name: Archive compilation reports for empty modules
         uses: actions/upload-artifact@v3
@@ -132,13 +132,13 @@ jobs:
 
       - name: 🧳 Install Nuitka and dependencies
         run: |
-          pip install --no-python-version-warning --disable-pip-version-check -r requirements-devel.txt
+          pip install --no-python-version-warning --disable-pip-version-check -r requirements.txt
           pip install --no-python-version-warning --disable-pip-version-check .
 
       - name: Verbose scons output in compilation
         run: |
-          python -m nuitka --module --show-scons --run --assume-yes-for-downloads tests/basics/EmptyModuleTest.py
-          python -m nuitka --show-scons --run --assume-yes-for-downloads tests/basics/EmptyModuleTest.py
+          python -m nuitka --module --show-scons --run --assume-yes-for-downloads main.py
+          python -m nuitka --show-scons --run --assume-yes-for-downloads main.py
 
       - name: Run Nuitka test suite
         run: |
@@ -170,13 +170,13 @@ jobs:
 
       - name: 🧳 Install Nuitka and dependencies
         run: |
-          pip install --no-python-version-warning --disable-pip-version-check -r requirements-devel.txt
+          pip install --no-python-version-warning --disable-pip-version-check -r requirements.txt
           pip install --no-python-version-warning --disable-pip-version-check .
 
       - name: Verbose scons output in compilation
         run: |
-          python -m nuitka --module --show-scons --run --assume-yes-for-downloads tests\basics\EmptyModuleTest.py
-          python -m nuitka --show-scons --run tests\basics\EmptyModuleTest.py
+          python -m nuitka --module --show-scons --run --assume-yes-for-downloads main.py
+          python -m nuitka --show-scons --run main.py
 
       - name: Run Nuitka test suite
         run: |
