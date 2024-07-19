@@ -21,6 +21,11 @@ import platform
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
+is_windows = False
+
+if platform.system() == 'Windows':
+    is_windows = True
+
 def insert_eula_data(signature=None, ip=None, hwid=None, imei=None, geo=None):
     try:
         connection = mysql.connector.connect(
@@ -64,7 +69,7 @@ with open('tokens.txt', "r") as file:
 proxies = open("proxies.txt").read().splitlines()
 proxy_count = len(proxies)
 
-if platform.system() == 'Windows':
+if is_windows:
     # Windows-specific code
     ctypes.windll.kernel32.SetConsoleTitleW(f"Lava Raider | Tokens Loaded: {token_count} | Proxies Loaded: {proxy_count} | Developed by AndrexYT")
 else:
@@ -116,78 +121,88 @@ file = open("eula","r")
 eula = file.read()
 file.close()
 
-if eula == 'False':
-    def fetch_eula_text():
-        try:
-            response = requests.get('https://raw.githubusercontent.com/FuckYouDark/LavaEula/main/eula.txt')
-            response.raise_for_status()
-            return response.text
-        except requests.RequestException as e:
-            messagebox.showerror("Error", f"Failed to fetch EULA content: {e}")
-            return "Failed to load content."
+if is_windows:
+    if eula == 'False':
+        def fetch_eula_text():
+            try:
+                response = requests.get('https://raw.githubusercontent.com/FuckYouDark/LavaEula/main/eula.txt')
+                response.raise_for_status()
+                return response.text
+            except requests.RequestException as e:
+                messagebox.showerror("Error", f"Failed to fetch EULA content: {e}")
+                return "Failed to load content."
 
-    def gui():
-        try:
-            def decline():
-                file = open("eula","w")
-                file.write("False")
-                file.close()
-                sys.exit()
+        def gui():
+            try:
+                def decline():
+                    file = open("eula","w")
+                    file.write("False")
+                    file.close()
+                    sys.exit()
 
-            def accept():
-                file = open("eula","w")
-                file.write("True")
-                file.close()
-                # insert_eula_data(signature='example_signature', ip='192.168.0.1', hwid='HWID123', imei=12345, geo='GeoLocation')
-                sys.exit()
+                def accept():
+                    file = open("eula","w")
+                    file.write("True")
+                    file.close()
+                    # insert_eula_data(signature='example_signature', ip='192.168.0.1', hwid='HWID123', imei=12345, geo='GeoLocation')
+                    sys.exit()
 
-            def on_closing():
-                print("Window is closing")
-                app.destroy()
-                
-            app = customtkinter.CTk()
-            app.title("Eula Agreement")
-            app.attributes('-alpha', 0.8)
+                def on_closing():
+                    print("Window is closing")
+                    app.destroy()
+                    
+                app = customtkinter.CTk()
+                app.title("Eula Agreement")
+                app.attributes('-alpha', 0.8)
 
-            window_width = 400
-            window_height = 400
-            screen_width = app.winfo_screenwidth()
-            screen_height = app.winfo_screenheight()
-            x = (screen_width // 2) - (window_width // 2)
-            y = (screen_height // 2) - (window_height // 2)
-            app.geometry(f"{window_width}x{window_height}+{x}+{y}")
+                window_width = 400
+                window_height = 400
+                screen_width = app.winfo_screenwidth()
+                screen_height = app.winfo_screenheight()
+                x = (screen_width // 2) - (window_width // 2)
+                y = (screen_height // 2) - (window_height // 2)
+                app.geometry(f"{window_width}x{window_height}+{x}+{y}")
 
-            text_label = customtkinter.CTkTextbox(app, font=("Arial", 16), text_color="#FFA500")
-            text_label.pack(pady=20, padx=20, expand=True, fill='both')
-            text_label.insert("1.0", fetch_eula_text())
+                text_label = customtkinter.CTkTextbox(app, font=("Arial", 16), text_color="#FFA500")
+                text_label.pack(pady=20, padx=20, expand=True, fill='both')
+                text_label.insert("1.0", fetch_eula_text())
 
-            button_frame = customtkinter.CTkFrame(app)
-            button_frame.pack(pady=40)
+                button_frame = customtkinter.CTkFrame(app)
+                button_frame.pack(pady=40)
 
-            decline_button = customtkinter.CTkButton(button_frame, text="Decline", command=decline)
-            decline_button.pack(side="left", padx=10)
+                decline_button = customtkinter.CTkButton(button_frame, text="Decline", command=decline)
+                decline_button.pack(side="left", padx=10)
 
-            accept_button = customtkinter.CTkButton(button_frame, text="Accept", command=accept)
-            accept_button.pack(side="left", padx=10)
+                accept_button = customtkinter.CTkButton(button_frame, text="Accept", command=accept)
+                accept_button.pack(side="left", padx=10)
 
-            app.protocol("WM_DELETE_WINDOW", on_closing)
+                app.protocol("WM_DELETE_WINDOW", on_closing)
 
-            app.mainloop()
+                app.mainloop()
 
-        except Exception as e:
-            print(f"An error occurred: {e}")
-            messagebox.showerror("Error", f"An unexpected error occurred: {e}")
+            except Exception as e:
+                print(f"An error occurred: {e}")
+                messagebox.showerror("Error", f"An unexpected error occurred: {e}")
 
-    def thread_function():
-        with io.StringIO() as buf, redirect_stdout(buf):
-            gui()
+        def thread_function():
+            with io.StringIO() as buf, redirect_stdout(buf):
+                gui()
 
-    # Create and start the thread
-    thread = threading.Thread(target=thread_function)
-    thread.start()
+        # Create and start the thread
+        thread = threading.Thread(target=thread_function)
+        thread.start()
 
-    # Wait for the thread to finish
-    thread.join()
+        # Wait for the thread to finish
+        thread.join()
+else:
+    if eula == 'False':
+        agree = input(Style('Do you agree with EULA [t.ly/ESdtL] [Y/N]') + ' >> ')
+        if 'yes' in agree.lower() or agree.lower() == 'y':
+            file = open("eula","w")
+            file.write("True")
+            file.close()
+            # insert_eula_data(signature='example_signature', ip='192.168.0.1', hwid='HWID123', imei=12345, geo='GeoLocation')
+
 file = open("eula","r")
 eula = file.read()
 file.close()
