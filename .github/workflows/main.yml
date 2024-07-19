@@ -60,7 +60,7 @@ jobs:
             *.xml
 
       - name: Print working directory 📂
-        run: cd . && pwd && ls -R -l
+        run: cd . && pwd
 
       - name: List directory contents
         run: ls -R
@@ -191,7 +191,7 @@ jobs:
         working-directory: .
 
       - name: Print working directory 📂
-        run: cd . && pwd && ls -R -l
+        run: cd . && pwd
 
       - name: List directory contents
         run: ls -R
