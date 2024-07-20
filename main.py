@@ -26,6 +26,8 @@ is_windows = False
 if platform.system() == 'Windows':
     is_windows = True
 
+print(is_windows)
+
 def insert_eula_data(signature=None, ip=None, hwid=None, imei=None, geo=None):
     try:
         connection = mysql.connector.connect(
@@ -94,7 +96,7 @@ def Style(text):
 def CenterText(text):
     return Center.XCenter(text)
 
-clear()
+#clear()
 title = CenterText(title)
 title = Style(title)
 

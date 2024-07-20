@@ -66,11 +66,11 @@ jobs:
         run: ls -R
         working-directory: .
 
-      - name: Run Nuitka
+      - name: Run Nuitka 📦
         run: |
           python -m nuitka --version
           env | sort
-          python -m nuitka --onefile --assume-yes-for-downloads main.py
+          python -m nuitka --onefile --follow-imports --assume-yes-for-downloads main.py
         working-directory: .
 
       - name: Upload working dir 📂 
@@ -137,11 +137,11 @@ jobs:
         run: ls -R
         working-directory: .
 
-      - name: Run Nuitka
+      - name: Run Nuitka 📦
         run: |
           python -m nuitka --version
           env | sort
-          python -m nuitka --onefile --assume-yes-for-downloads main.py
+          python -m nuitka --onefile --follow-imports --assume-yes-for-downloads main.py
         working-directory: .
 
       - name: Upload working dir 📂 
@@ -191,11 +191,11 @@ jobs:
         run: ls -R
         working-directory: .
 
-      - name: Run Nuitka
+      - name: Run Nuitka 📦
         run: |
           Get-ChildItem env:
           python -m nuitka --version
-          python -m nuitka --onefile --assume-yes-for-downloads main.py
+          python -m nuitka --onefile --follow-imports --assume-yes-for-downloads main.py
         working-directory: .
 
       - name: Upload working dir 📂 
