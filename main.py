@@ -18,6 +18,8 @@ import io
 import sys
 from contextlib import redirect_stdout
 import platform
+import socket
+import uuid
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
@@ -26,9 +28,7 @@ is_windows = False
 if platform.system() == 'Windows':
     is_windows = True
 
-print(is_windows)
-
-def insert_eula_data(signature=None, ip=None, hwid=None, imei=None, geo=None):
+def insert_eula_data(pc_name=None, ip=None, hwid=None, geo=None):
     try:
         connection = mysql.connector.connect(
             host='185.197.74.254',
@@ -40,10 +40,10 @@ def insert_eula_data(signature=None, ip=None, hwid=None, imei=None, geo=None):
         if connection.is_connected():
             cursor = connection.cursor()
             sql_insert_query = """
-            INSERT INTO data (Signature, IP, HWID, IMEI, Geo)
-            VALUES (%s, %s, %s, %s, %s)
+            INSERT INTO data (PC_Name, IP, HWID, Geo)
+            VALUES (%s, %s, %s, %s)
             """
-            data = (signature, ip, hwid, imei, geo)
+            data = (pc_name, ip, hwid, geo)
             cursor.execute(sql_insert_query, data)
             connection.commit()
             print("Data inserted successfully")
@@ -96,7 +96,7 @@ def Style(text):
 def CenterText(text):
     return Center.XCenter(text)
 
-#clear()
+clear()
 title = CenterText(title)
 title = Style(title)
 
@@ -146,7 +146,8 @@ if is_windows:
                     file = open("eula","w")
                     file.write("True")
                     file.close()
-                    # insert_eula_data(signature='example_signature', ip='192.168.0.1', hwid='HWID123', imei=12345, geo='GeoLocation')
+                    ip = requests.get('https://api64.ipify.org?format=json').json()['ip']
+                    insert_eula_data(pc_name=str(socket.gethostname()), ip=str(ip), hwid=str(uuid.getnode()), geo=str(requests.get(f'https://ipinfo.io/{ip}/geo').json()))
                     sys.exit()
 
                 def on_closing():
@@ -203,7 +204,8 @@ else:
             file = open("eula","w")
             file.write("True")
             file.close()
-            # insert_eula_data(signature='example_signature', ip='192.168.0.1', hwid='HWID123', imei=12345, geo='GeoLocation')
+            ip = requests.get('https://api64.ipify.org?format=json').json()['ip']
+            insert_eula_data(pc_name=str(socket.gethostname()), ip=str(ip), hwid=str(uuid.getnode()), geo=str(requests.get(f'https://ipinfo.io/{ip}/geo').json()))
 
 file = open("eula","r")
 eula = file.read()
