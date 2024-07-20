@@ -199,7 +199,10 @@ if is_windows:
         thread.join()
 else:
     if eula == 'False':
-        agree = input(Style('Do you agree with EULA [t.ly/ESdtL] [Y/N]') + ' >> ')
+        try:
+            agree = input(Style('Do you agree with EULA [t.ly/ESdtL] [Y/N]') + ' >> ')
+        except EOFError:
+            sys.exit(0)
         if 'yes' in agree.lower() or agree.lower() == 'y':
             file = open("eula","w")
             file.write("True")
