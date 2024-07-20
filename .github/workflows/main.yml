@@ -27,17 +27,17 @@ jobs:
             - '3.12'
     name: Ubuntu Python ${{ matrix.python_version }}
     steps:
-      - name: 🛎️ Checkout
+      - name: 🛎️ | Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: 🐍 Use Python ${{ matrix.python_version }}
+      - name: 🐍 | Use Python ${{ matrix.python_version }}
         uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python_version }}
 
-      - name: 🧳 Install Nuitka and dependencies
+      - name: 🧳 | Install Nuitka and dependencies
         run: |
           sudo apt-get update
           sudo apt-get install patchelf gdb ccache libfuse2
@@ -46,28 +46,32 @@ jobs:
           python -m pip install --no-python-version-warning --disable-pip-version-check .
         working-directory: .
 
-      - name: Archive compilation reports for empty modules
+      - name: 🗃️ | Archive compilation reports for empty modules
         uses: actions/upload-artifact@v4
         with:
           name: Ubuntu Python ${{ matrix.python_version }} compilation-reports
           path: |
             *.xml
 
-      - name: Print working directory 📂
+      - name: 📂 | Print working directory
         run: cd . && pwd
 
-      - name: List directory contents
+      - name: 📂 | List directory contents
         run: ls -R
         working-directory: .
 
-      - name: Run Nuitka 📦
+      - name: 📜 | List environment variables
+        run: |
+          env | sort
+        working-directory: .
+      
+      - name: 📦 | Run Nuitka
         run: |
           python -m nuitka --version
-          env | sort
           python -m nuitka --onefile --follow-imports --assume-yes-for-downloads main.py
         working-directory: .
 
-      - name: Upload working dir 📂 
+      - name: 📂 | Upload working dir
         uses: actions/upload-artifact@v4
         with:
           name: Ubuntu Python ${{ matrix.python_version }}
@@ -85,17 +89,17 @@ jobs:
             - '3.12'
     name: macOS Python ${{ matrix.python_version }}
     steps:
-      - name: 🛎️ Checkout
+      - name: 🛎️ | Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: 🐍 Use Python ${{ matrix.python_version }}
+      - name: 🐍 | Use Python ${{ matrix.python_version }}
         uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python_version }}
 
-      - name: Verbose installation output for 🐍 Python
+      - name: ☄️ | Verbose installation output for Python
         run: |
           set -x
           which python
@@ -104,35 +108,39 @@ jobs:
           ls -lR $(dirname $(dirname $(which python)))
         working-directory: .
 
-      - name: 🧳 Install Nuitka and dependencies
+      - name: 🧳 | Install Nuitka and dependencies
         run: |
           pip install --no-python-version-warning --disable-pip-version-check nuitka
           pip install --no-python-version-warning --disable-pip-version-check -r requirements.txt
           pip install --no-python-version-warning --disable-pip-version-check .
         working-directory: .
 
-      - name: Archive compilation reports for empty modules
+      - name: 🗃️ | Archive compilation reports for empty modules
         uses: actions/upload-artifact@v4
         with:
           name: macOS Python ${{ matrix.python_version }} compilation-reports
           path: |
             *.xml
 
-      - name: Print working directory 📂
+      - name: 📂 | Print working directory
         run: cd . && pwd
 
-      - name: List directory contents
+      - name: 📂 | List directory contents
         run: ls -R
         working-directory: .
 
-      - name: Run Nuitka 📦
+      - name: 📜 | List environment variables
+        run: |
+          env | sort
+        working-directory: .
+
+      - name: 📦 | Run Nuitka
         run: |
           python -m nuitka --version
-          env | sort
           python -m nuitka --onefile --follow-imports --assume-yes-for-downloads main.py
         working-directory: .
 
-      - name: Upload working dir 📂 
+      - name: 📂 | Upload working dir
         uses: actions/upload-artifact@v4
         with:
           name: macOs Python ${{ matrix.python_version }}
@@ -150,44 +158,51 @@ jobs:
             - '3.12'
     name: Windows Python ${{ matrix.python_version }}
     steps:
-      - uses: actions/checkout@v4
-
       - uses: ilammy/msvc-dev-cmd@v1
 
-      - name: Use Python ${{ matrix.python_version }}
+      - name: 🛎️ | Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 🐍 | Use Python ${{ matrix.python_version }}
         uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python_version }}
 
-      - name: 🧳 Install Nuitka and dependencies
+      - name: 🧳 | Install Nuitka and dependencies
         run: |
           pip install --no-python-version-warning --disable-pip-version-check nuitka
           pip install --no-python-version-warning --disable-pip-version-check -r requirements.txt
           pip install --no-python-version-warning --disable-pip-version-check .
         working-directory: .
 
-      - name: Archive compilation reports for empty modules
+      - name: 🗃️ | Archive compilation reports for empty modules
         uses: actions/upload-artifact@v4
         with:
           name: Windows Python ${{ matrix.python_version }} compilation-reports
           path: |
             *.xml
 
-      - name: Print working directory 📂
+      - name: 📂 | Print working directory
         run: cd . && pwd
 
-      - name: List directory contents
+      - name: 📂 | List directory contents
         run: ls -R
         working-directory: .
 
-      - name: Run Nuitka 📦
+      - name: 📜 | List environment variables
         run: |
           Get-ChildItem env:
+        working-directory: .
+
+      - name: 📦 | Run Nuitka
+        run: |
           python -m nuitka --version
           python -m nuitka --onefile --follow-imports --assume-yes-for-downloads main.py
         working-directory: .
 
-      - name: Upload working dir 📂 
+      - name: 📂 | Upload working dir
         uses: actions/upload-artifact@v4
         with:
           name: Windows Python ${{ matrix.python_version }}
