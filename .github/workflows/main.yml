@@ -53,7 +53,7 @@ jobs:
         working-directory: .
 
       - name: Archive compilation reports for empty modules
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: compilation-reports
           path: |
@@ -74,7 +74,7 @@ jobs:
         working-directory: .
 
       - name: Upload working dir 📂 
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: Ubuntu Python ${{ matrix.python_version }}
           path: |
@@ -124,7 +124,7 @@ jobs:
         working-directory: .
 
       - name: Archive compilation reports for empty modules
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: compilation-reports
           path: |
@@ -145,7 +145,7 @@ jobs:
         working-directory: .
 
       - name: Upload working dir 📂 
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: macOs Python ${{ matrix.python_version }}
           path: |
@@ -184,6 +184,13 @@ jobs:
           python -m nuitka --show-scons --run main.py
         working-directory: .
 
+      - name: Archive compilation reports for empty modules
+        uses: actions/upload-artifact@v4
+        with:
+          name: compilation-reports
+          path: |
+            *.xml
+
       - name: Print working directory 📂
         run: cd . && pwd
 
@@ -199,7 +206,7 @@ jobs:
         working-directory: .
 
       - name: Upload working dir 📂 
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: Windows Python ${{ matrix.python_version }}
           path: |
