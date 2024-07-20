@@ -46,12 +46,6 @@ jobs:
           python -m pip install --no-python-version-warning --disable-pip-version-check .
         working-directory: .
 
-      - name: Verbose scons output in compilation
-        run: |
-          python -m nuitka --module --show-scons --run --report=compilation-report-module.xml --experimental=debug-report-traceback main.py
-          python -m nuitka --show-scons --run --report=compilation-report-exe.xml --experimental=debug-report-traceback main.py
-        working-directory: .
-
       - name: Archive compilation reports for empty modules
         uses: actions/upload-artifact@v4
         with:
@@ -117,12 +111,6 @@ jobs:
           pip install --no-python-version-warning --disable-pip-version-check .
         working-directory: .
 
-      - name: Verbose scons output in compilation
-        run: |
-          python -m nuitka --module --show-scons --run --assume-yes-for-downloads main.py
-          python -m nuitka --show-scons --run --assume-yes-for-downloads main.py
-        working-directory: .
-
       - name: Archive compilation reports for empty modules
         uses: actions/upload-artifact@v4
         with:
@@ -176,12 +164,6 @@ jobs:
           pip install --no-python-version-warning --disable-pip-version-check nuitka
           pip install --no-python-version-warning --disable-pip-version-check -r requirements.txt
           pip install --no-python-version-warning --disable-pip-version-check .
-        working-directory: .
-
-      - name: Verbose scons output in compilation
-        run: |
-          python -m nuitka --module --show-scons --run --assume-yes-for-downloads main.py
-          python -m nuitka --show-scons --run main.py
         working-directory: .
 
       - name: Archive compilation reports for empty modules
