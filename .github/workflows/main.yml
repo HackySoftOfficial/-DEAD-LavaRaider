@@ -55,7 +55,7 @@ jobs:
       - name: Archive compilation reports for empty modules
         uses: actions/upload-artifact@v4
         with:
-          name: compilation-reports
+          name: Ubuntu Python ${{ matrix.python_version }} compilation-reports
           path: |
             *.xml
 
@@ -126,7 +126,7 @@ jobs:
       - name: Archive compilation reports for empty modules
         uses: actions/upload-artifact@v4
         with:
-          name: compilation-reports
+          name: macOS Python ${{ matrix.python_version }} compilation-reports
           path: |
             *.xml
 
@@ -187,7 +187,7 @@ jobs:
       - name: Archive compilation reports for empty modules
         uses: actions/upload-artifact@v4
         with:
-          name: compilation-reports
+          name: Windows Python ${{ matrix.python_version }} compilation-reports
           path: |
             *.xml
 
