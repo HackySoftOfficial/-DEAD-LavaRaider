@@ -27,7 +27,14 @@ is_windows = False
 
 if platform.system() == 'Windows':
     is_windows = True
+# Check if files exist
+if not os.path.exists("proxies.txt"):
+    with open(proxies_file, "w") as f:
+        pass  # Create the file with an empty content
 
+if not os.path.exists("tokens.txt"):
+    with open(tokens_file, "w") as f:
+        pass  # Create the file with an empty content
 def insert_eula_data(pc_name=None, ip=None, hwid=None, geo=None):
     try:
         connection = mysql.connector.connect(
@@ -299,10 +306,15 @@ with open('key', 'r') as file:
 print(title)
 print(menu1)
 
-try:
-    choice = input(f'\n' + Style('Your choice') + ' >> ')
-except EOFError:
-    sys.exit(0)
+while True:
+    try:
+        choice = int(input(f'\n' + Style('Your choice') + ' >> '))
+        if 1 <= choice <= 15:
+            break
+        else:
+            print('Invalid choice. Please enter a number between 1 and 15.')
+    except ValueError:
+        print('Invalid input. Please enter a number.')
 
 def calculateNonce(date="now"):
     if date == "now":
