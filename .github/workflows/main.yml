@@ -57,8 +57,7 @@ jobs:
         with:
           name: ${{ runner.os }} Python ${{ matrix.python_version }} Build
           path: |
-            build/**
-            .
+            build/main.exe
             
   mac-python3:
     runs-on: macos-latest
@@ -117,8 +116,8 @@ jobs:
         with:
           name: ${{ runner.os }} Python ${{ matrix.python_version }} Build
           path: |
-            build/**
-            .
+            build/main.exe
+
   windows:
     runs-on: windows-latest
     strategy:
@@ -169,5 +168,4 @@ jobs:
         with:
           name: ${{ runner.os }} Python ${{ matrix.python_version }} Build
           path: |
-            build\main.exe
-            .
+            build/main.exe

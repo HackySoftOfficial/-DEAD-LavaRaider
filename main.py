@@ -63,13 +63,23 @@ def clear():
     else:
         _ = system('clear')
 
-with open('tokens.txt', "r") as file:
+if not os.path.exists('tokens.txt'):
+    with open('tokens.txt', 'w') as file:
+        pass  # Create the file if it doesn't exist
+
+with open('tokens.txt', 'r') as file:
     lines = [line.strip() for line in file.readlines()]
     token_count = len(lines)
     tokens = lines
 
-proxies = open("proxies.txt").read().splitlines()
-proxy_count = len(proxies)
+if not os.path.exists('proxies.txt'):
+    with open('proxies.txt', 'w') as file:
+        pass  # Create the file if it doesn't exist
+
+with open('proxies.txt', 'r') as file:
+    proxies = file.read().splitlines()
+    proxy_count = len(proxies)
+
 
 if is_windows:
     # Windows-specific code
