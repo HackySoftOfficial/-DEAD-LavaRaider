@@ -57,7 +57,7 @@ jobs:
         with:
           name: ${{ runner.os }} Python ${{ matrix.python_version }} Build
           path: |
-            build/main.exe
+            build/main.bin
             
   mac-python3:
     runs-on: macos-latest
