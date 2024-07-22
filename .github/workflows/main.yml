@@ -46,7 +46,7 @@ jobs:
       - name: 📦 | Run Nuitka
         run: |
           python -m nuitka --version
-          python -m nuitka --onefile --windows-icon-from-ico=icon.ico --enable-plugin=tk-inter --no-python-version-warning --disable-pip-version-check main.py
+          python -m nuitka --onefile --windows-icon-from-ico=icon.ico --enable-plugin=tk-inter --static-libpython=yes --follow-imports --assume-yes-for-downloads main.py
         working-directory: .
 
       - name: 🗃️ | Upload working dir
