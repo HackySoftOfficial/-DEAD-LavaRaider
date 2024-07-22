@@ -22,12 +22,17 @@ jobs:
         with:
           python-version: ${{ matrix.python_version }}
 
+      - name: Install sccache
+        run: sudo apt-get install sccache
+    
       - name: 🧳 | Install Nuitka and dependencies
         run: |
-          pip install --no-python-version-warning --disable-pip-version-check nuitka
+          pip install --no-python-version-warning --disable-pip-version-check nuitka pillow
           pip install --no-python-version-warning --disable-pip-version-check -r requirements.txt
           pip install --no-python-version-warning --disable-pip-version-check .
         working-directory: .
+
+
 
       - name: 📂 | Print working directory
         run: cd . && pwd
