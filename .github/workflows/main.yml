@@ -169,5 +169,5 @@ jobs:
         with:
           name: ${{ runner.os }} Python ${{ matrix.python_version }} Build
           path: |
-            build/**
+            build\main.exe
             .
