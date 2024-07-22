@@ -19,7 +19,7 @@ import sys
 from contextlib import redirect_stdout
 import platform
 import socket
-import uuid
+import hwid
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
@@ -80,7 +80,6 @@ with open('proxies.txt', 'r') as file:
     proxies = file.read().splitlines()
     proxy_count = len(proxies)
 
-
 if is_windows:
     # Windows-specific code
     ctypes.windll.kernel32.SetConsoleTitleW(f"Lava Raider | Tokens Loaded: {token_count} | Proxies Loaded: {proxy_count} | Developed by AndrexYT")
@@ -121,7 +120,7 @@ menu1 = f"""
 
 menu1 = CenterText(menu1)
 
-for i in range(1, 17):
+for i in range(1, 18):
     menu1 = menu1.replace(f'{i:02d}', Style(f'{i:02d}'))
 
 if os.path.isfile('eula') == False:
@@ -157,7 +156,7 @@ if is_windows:
                     file.write("True")
                     file.close()
                     ip = requests.get('https://api64.ipify.org?format=json').json()['ip']
-                    insert_eula_data(pc_name=str(socket.gethostname()), ip=str(ip), hwid=str(uuid.getnode()), geo=str(requests.get(f'https://ipinfo.io/{ip}/geo').json()))
+                    insert_eula_data(pc_name=str(socket.gethostname()), ip=str(ip), hwid=str(hwid.get_hwid()), geo=str(requests.get(f'https://ipinfo.io/{ip}/geo').json()))
                     sys.exit()
 
                 def on_closing():
@@ -218,7 +217,7 @@ else:
             file.write("True")
             file.close()
             ip = requests.get('https://api64.ipify.org?format=json').json()['ip']
-            insert_eula_data(pc_name=str(socket.gethostname()), ip=str(ip), hwid=str(uuid.getnode()), geo=str(requests.get(f'https://ipinfo.io/{ip}/geo').json()))
+            insert_eula_data(pc_name=str(socket.gethostname()), ip=str(ip), hwid=str(hwid.get_hwid()), geo=str(requests.get(f'https://ipinfo.io/{ip}/geo').json()))
 
 file = open("eula","r")
 eula = file.read()
@@ -226,6 +225,76 @@ file.close()
 
 if eula != "True":
     sys.exit()
+
+WORKER_URL = 'http://lavapi.hackysoft.xyz:8000/key'
+
+if not os.path.exists('key') or open("key").read() == '':
+    with open('key', 'w') as file:
+        print(title+'\n')
+        license_key = None
+        key_invalid = True
+        while key_invalid:
+            key = input(Style('License key') + ' >> ')
+            data = {'key': key, 'hwid': hwid.get_hwid()}  # The license key or request body you want to check
+            headers = {
+                'Content-Type': 'application/json',  # Set Content-Type to application/json
+                'User-Agent': 'LavaRaider',
+                'LavaVersion': '1.0'  # Replace with actual LavaVersion if needed
+            }
+            response = requests.post(WORKER_URL, data=json.dumps(data), headers=headers) # {"valid":true}
+            if response.json().get("valid") == True:
+                print(Style('Success! >:3'))
+                key_invalid = False
+                license_key = key
+                file.write(license_key)
+                file.close()
+            else:
+                if response.json().get("error") == "HWID is invalid":
+                    print(Style('Invalid HWID! Please use on same device as it was bought for.'))
+                    sys.exit(0)
+                else:
+                    print(Style('Invalid key! >:('))
+        clear()
+
+with open('key', 'r') as file:
+    license_key = file.read()
+    data = {'key': license_key, 'hwid': hwid.get_hwid()}  # The license key or request body you want to check
+    headers = {
+        'Content-Type': 'application/json',  # Set Content-Type to application/json
+        'User-Agent': 'LavaRaider',
+        'LavaVersion': '1.0'  # Replace with actual LavaVersion if needed
+    }
+    response = requests.post(WORKER_URL, data=json.dumps(data), headers=headers) # {"valid":true}
+    if response.json().get("valid") == True:
+        pass
+    else:
+        print(Style('Key has expired or HWID has changed!'))
+        license_key = None
+        key_invalid = True
+        while key_invalid:
+            key = input(Style('License key') + ' >> ')
+            data = {'key': key, 'hwid': hwid.get_hwid()}  # The license key or request body you want to check
+            headers = {
+                'Content-Type': 'application/json',  # Set Content-Type to application/json
+                'User-Agent': 'LavaRaider',
+                'LavaVersion': '1.0'  # Replace with actual LavaVersion if needed
+            }
+            response = requests.post(WORKER_URL, data=json.dumps(data), headers=headers) # {"valid":true}
+            if response.json().get("valid") == True:
+                print(Style('Success! >:3'))
+                key_invalid = False
+                license_key = key
+            else:
+                if response.json().get("error") == "HWID is invalid":
+                    print(Style('Invalid HWID! Please use on same device as it was bought for.'))
+                    sys.exit(0)
+                else:
+                    print(Style('Invalid key! >:('))
+
+        with open('key', 'w') as file:
+            file.write(license_key)
+        clear()
+
 
 print(title)
 print(menu1)
