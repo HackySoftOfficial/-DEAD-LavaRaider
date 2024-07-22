@@ -55,10 +55,11 @@ jobs:
       - name: 🗃️ | Upload working dir
         uses: actions/upload-artifact@v4
         with:
-          name: Ubuntu Python ${{ matrix.python_version }}
+          name: ${{ runner.os }} Python ${{ matrix.python_version }} Build
           path: |
             build/**
             .
+            
   mac-python3:
     runs-on: macos-latest
     strategy:
