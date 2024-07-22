@@ -1,59 +1,58 @@
-name: Build and deploy
+# This is a workflow for testing various Nuitka command-line options
+
+name: Build-All-Platforms
+
+# Controls when the workflow will run
 on:
+  # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
-    branches:
-      - main
+    branches: ["main"]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
 
 jobs:
   build:
-    runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
-        python_version:
-        - '3.11'
-    steps:
-      - name: 🛎️ | Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: 🐍 | Use Python ${{ matrix.python_version }}
-        uses: actions/setup-python@v5
-        with:
-          python-version: ${{ matrix.python_version }}
-
-      - name: Install sccache
-        run: sudo apt-get install ccache
-    
-      - name: 🧳 | Install Nuitka and dependencies
-        run: |
-          pip install --no-python-version-warning --disable-pip-version-check nuitka pillow
-          pip install --no-python-version-warning --disable-pip-version-check -r requirements.txt
-          pip install --no-python-version-warning --disable-pip-version-check .
-        working-directory: .
-
-
-
-      - name: 📂 | Print working directory
-        run: cd . && pwd
-
-      - name: 📂 | List directory contents
-        run: ls -R
-        working-directory: .
-
-      - name: 📜 | List environment variables
-        run: |
-          env | sort
-        working-directory: .
+        os: [macos-latest, ubuntu-latest, windows-latest]
       
-      - name: 📦 | Run Nuitka
-        run: |
-          python -m nuitka --version
-          python -m nuitka --onefile --windows-icon-from-ico=icon.ico --enable-plugin=tk-inter --static-libpython=yes --follow-imports --assume-yes-for-downloads main.py
-        working-directory: .
+    runs-on: ${{ matrix.os }}
+    
+    steps:
+      # Check-out repository
+      - uses: actions/checkout@v3
 
-      - name: 🗃️ | Upload working dir
-        uses: actions/upload-artifact@v4
+      - name: Setup Python
+        uses: actions/setup-python@v4
         with:
-          name: Build
-          path: .
+          python-version: '3.10' # Version range or exact version of a Python version to use, using SemVer's version range syntax
+          architecture: 'x64' # optional x64 or x86. Defaults to x64 if not specified
+          cache: 'pip'
+          cache-dependency-path: |
+            **/requirements*.txt
+
+      # Install dependencies
+      - name: Install Dependencies
+        run: |
+          pip install -r requirements.txt
+
+      # Build python script into a stand-alone exe
+      - uses: jimkring/python-script-to-exe@v0.2.0
+        with:
+          script-name: main.py
+          onefile: true
+          access-token: ${{ secrets.NUITKA_COMMERCIAL_ACCESS_TOKEN }}
+          # macos-create-app-bundle: ${{ runner.os == 'macOS' }}
+          
+      # Uploads artifacts
+      - name: "Upload Artifacts"
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ runner.os }} Build
+          path: |
+            build/*.exe
+            build/*.bin
+            build/*.app/**/*
