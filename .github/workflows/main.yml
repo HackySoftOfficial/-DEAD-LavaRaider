@@ -49,7 +49,7 @@ jobs:
       - name: 📦 | Run Nuitka
         run: |
           python -m nuitka --version
-          python -m nuitka --onefile --windows-icon-from-ico=icon.ico --follow-imports --assume-yes-for-downloads --output-dir build main.py
+          python -m nuitka --onefile --windows-icon-from-ico=icon.ico --follow-imports --assume-yes-for-downloads --output-dir=build main.py
         working-directory: .
 
       - name: 🗃️ | Upload working dir
@@ -108,7 +108,7 @@ jobs:
       - name: 📦 | Run Nuitka
         run: |
           python -m nuitka --version
-          python -m nuitka --onefile --windows-icon-from-ico=icon.ico --follow-imports --assume-yes-for-downloads --output-dir build main.py
+          python -m nuitka --onefile --windows-icon-from-ico=icon.ico --follow-imports --assume-yes-for-downloads --output-dir=build main.py
         working-directory: .
 
       - name: 🗃️ | Upload working dir
@@ -160,59 +160,7 @@ jobs:
       - name: 📦 | Run Nuitka
         run: |
           python -m nuitka --version
-          python -m nuitka --onefile --windows-icon-from-ico=icon.ico --follow-imports --assume-yes-for-downloads --output-dir build main.py
-        working-directory: .
-
-      - name: 🗃️ | Upload working dir
-        uses: actions/upload-artifact@v4
-        with:
-          name: ${{ runner.os }} Python ${{ matrix.python_version }} Build
-          path: |
-            build/**
-            .
-  self-hosted:
-    runs-on: self-hosted
-    strategy:
-      fail-fast: false
-      matrix:
-        python_version: ['3.10', '3.11', '3.12']
-    name: Self-hosted Ubuntu Python ${{ matrix.python_version }}
-    steps:
-      - name: 🛎️ | Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: 🐍 | Use Python ${{ matrix.python_version }}
-        uses: actions/setup-python@v5
-        with:
-          python-version: ${{ matrix.python_version }}
-
-      - name: 🧳 | Install Nuitka and dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install patchelf gdb ccache libfuse2
-          pip install --no-python-version-warning --disable-pip-version-check nuitka
-          python -m pip install --no-python-version-warning --disable-pip-version-check -r requirements.txt
-          python -m pip install --no-python-version-warning --disable-pip-version-check .
-        working-directory: .
-
-      - name: 📂 | Print working directory
-        run: cd . && pwd
-
-      - name: 📂 | List directory contents
-        run: ls -R
-        working-directory: .
-
-      - name: 📜 | List environment variables
-        run: |
-          env | sort
-        working-directory: .
-      
-      - name: 📦 | Run Nuitka
-        run: |
-          python -m nuitka --version
-          python -m nuitka --onefile --windows-icon-from-ico=icon.ico --follow-imports --assume-yes-for-downloads --output-dir build main.py
+          python -m nuitka --onefile --windows-icon-from-ico=icon.ico --follow-imports --assume-yes-for-downloads --output-dir=build main.py
         working-directory: .
 
       - name: 🗃️ | Upload working dir
