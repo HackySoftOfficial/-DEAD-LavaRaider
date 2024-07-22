@@ -23,7 +23,7 @@ jobs:
           python-version: ${{ matrix.python_version }}
 
       - name: Install sccache
-        run: sudo apt-get install sccache
+        run: sudo apt-get install ccache
     
       - name: 🧳 | Install Nuitka and dependencies
         run: |
