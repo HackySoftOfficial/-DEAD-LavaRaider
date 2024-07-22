@@ -240,10 +240,10 @@ print(menu1)
 while True:
     try:
         choice = int(input(f'\n' + Style('Your choice') + ' >> '))
-        if choice not in [1, 15]:
-            print('Invalid choice. Please enter 1 or 15.')
-        else:
+        if 1 <= choice <= 15:
             break
+        else:
+            print('Invalid choice. Please enter a number between 1 and 15.')
     except ValueError:
         print('Invalid input. Please enter a number.')
 
