@@ -12,10 +12,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python_version:
-            - '3.10'
-            - '3.11'
-            - '3.12'
+        python_version: ['3.10', '3.11', '3.12']
     name: Ubuntu Python ${{ matrix.python_version }}
     steps:
       - name: 🛎️ | Checkout
@@ -52,7 +49,7 @@ jobs:
       - name: 📦 | Run Nuitka
         run: |
           python -m nuitka --version
-          python -m nuitka --onefile --windows-icon-from-ico=icon.ico --follow-imports --assume-yes-for-downloads output-dir: build main.py
+          python -m nuitka --onefile --windows-icon-from-ico=icon.ico --follow-imports --assume-yes-for-downloads --output-dir build main.py
         working-directory: .
 
       - name: 🗃️ | Upload working dir
@@ -60,16 +57,14 @@ jobs:
         with:
           name: Ubuntu Python ${{ matrix.python_version }}
           path: |
+            build/**
             .
   mac-python3:
     runs-on: macos-latest
     strategy:
       fail-fast: false
       matrix:
-        python_version:
-            - '3.10'
-            - '3.11'
-            - '3.12'
+        python_version: ['3.10', '3.11', '3.12']
     name: macOS Python ${{ matrix.python_version }}
     steps:
       - name: 🛎️ | Checkout
@@ -121,18 +116,14 @@ jobs:
         with:
           name: ${{ runner.os }} Python ${{ matrix.python_version }} Build
           path: |
-            build/*.exe
-            build/*.bin
-            build/*.app/**/*
+            build/**
+            .
   windows:
     runs-on: windows-latest
     strategy:
       fail-fast: false
       matrix:
-        python_version:
-            - '3.10'
-            - '3.11'
-            - '3.12'
+        python_version: ['3.10', '3.11', '3.12']
     name: Windows Python ${{ matrix.python_version }}
     steps:
       - uses: ilammy/msvc-dev-cmd@v1
@@ -169,7 +160,7 @@ jobs:
       - name: 📦 | Run Nuitka
         run: |
           python -m nuitka --version
-          python -m nuitka --onefile --windows-icon-from-ico=icon.ico --follow-imports --assume-yes-for-downloads output-dir: build main.py
+          python -m nuitka --onefile --windows-icon-from-ico=icon.ico --follow-imports --assume-yes-for-downloads --output-dir build main.py
         working-directory: .
 
       - name: 🗃️ | Upload working dir
@@ -177,19 +168,14 @@ jobs:
         with:
           name: ${{ runner.os }} Python ${{ matrix.python_version }} Build
           path: |
-            build/*.exe
-            build/*.bin
-            build/*.app/**/*
+            build/**
             .
   self-hosted:
     runs-on: self-hosted
     strategy:
       fail-fast: false
       matrix:
-        python_version:
-            - '3.10'
-            - '3.11'
-            - '3.12'
+        python_version: ['3.10', '3.11', '3.12']
     name: Self-hosted Ubuntu Python ${{ matrix.python_version }}
     steps:
       - name: 🛎️ | Checkout
@@ -226,7 +212,7 @@ jobs:
       - name: 📦 | Run Nuitka
         run: |
           python -m nuitka --version
-          python -m nuitka --onefile --windows-icon-from-ico=icon.ico --follow-imports --assume-yes-for-downloads main.py
+          python -m nuitka --onefile --windows-icon-from-ico=icon.ico --follow-imports --assume-yes-for-downloads --output-dir build main.py
         working-directory: .
 
       - name: 🗃️ | Upload working dir
@@ -234,6 +220,5 @@ jobs:
         with:
           name: ${{ runner.os }} Python ${{ matrix.python_version }} Build
           path: |
-            build/*.exe
-            build/*.bin
-            build/*.app/**/*
+            build/**
+            .
