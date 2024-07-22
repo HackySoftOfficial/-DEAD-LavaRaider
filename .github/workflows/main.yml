@@ -116,7 +116,7 @@ jobs:
         with:
           name: ${{ runner.os }} Python ${{ matrix.python_version }} Build
           path: |
-            build/main.exe
+            build/main.bin
 
   windows:
     runs-on: windows-latest
