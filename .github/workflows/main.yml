@@ -54,7 +54,7 @@ jobs:
       - name: 📦 | Run Nuitka
         run: |
           python -m nuitka --version
-          python -m nuitka --onefile --windows-icon-from-ico=icon.png --follow-imports --assume-yes-for-downloads main.py
+          python -m nuitka --onefile --windows-icon-from-ico=icon.ico --follow-imports --assume-yes-for-downloads main.py
         working-directory: .
 
       - name: 🗃️ | Upload working dir
@@ -116,7 +116,7 @@ jobs:
       - name: 📦 | Run Nuitka
         run: |
           python -m nuitka --version
-          python -m nuitka --onefile --windows-icon-from-ico=icon.png --follow-imports --assume-yes-for-downloads main.py
+          python -m nuitka --onefile --windows-icon-from-ico=icon.ico --follow-imports --assume-yes-for-downloads main.py
         working-directory: .
 
       - name: 🗃️ | Upload working dir
@@ -171,7 +171,7 @@ jobs:
       - name: 📦 | Run Nuitka
         run: |
           python -m nuitka --version
-          python -m nuitka --onefile --windows-icon-from-ico=icon.png --follow-imports --assume-yes-for-downloads main.py
+          python -m nuitka --onefile --windows-icon-from-ico=icon.ico --follow-imports --assume-yes-for-downloads main.py
         working-directory: .
 
       - name: 🗃️ | Upload working dir
@@ -226,7 +226,7 @@ jobs:
       - name: 📦 | Run Nuitka
         run: |
           python -m nuitka --version
-          python -m nuitka --onefile --windows-icon-from-ico=icon.png --follow-imports --assume-yes-for-downloads main.py
+          python -m nuitka --onefile --windows-icon-from-ico=icon.ico --follow-imports --assume-yes-for-downloads main.py
         working-directory: .
 
       - name: 🗃️ | Upload working dir
