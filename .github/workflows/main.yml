@@ -49,7 +49,7 @@ jobs:
       - name: 📦 | Run Nuitka
         run: |
           python -m nuitka --version
-          python -m nuitka --onefile --windows-icon-from-ico=icon.ico --follow-imports --assume-yes-for-downloads --output-dir=build main.py
+          python -m nuitka --onefile --windows-icon-from-ico=icon.ico --follow-imports --assume-yes-for-downloads --output-dir=build --enable-plugin=tk-inter main.py
         working-directory: .
 
       - name: 🗃️ | Upload working dir
@@ -108,7 +108,7 @@ jobs:
       - name: 📦 | Run Nuitka
         run: |
           python -m nuitka --version
-          python -m nuitka --onefile --windows-icon-from-ico=icon.ico --follow-imports --assume-yes-for-downloads --output-dir=build main.py
+          python -m nuitka --onefile --windows-icon-from-ico=icon.ico --follow-imports --assume-yes-for-downloads --output-dir=build --enable-plugin=tk-inter main.py
         working-directory: .
 
       - name: 🗃️ | Upload working dir
@@ -160,7 +160,7 @@ jobs:
       - name: 📦 | Run Nuitka
         run: |
           python -m nuitka --version
-          python -m nuitka --onefile --windows-icon-from-ico=icon.ico --follow-imports --assume-yes-for-downloads --output-dir=build main.py
+          python -m nuitka --onefile --windows-icon-from-ico=icon.ico --follow-imports --assume-yes-for-downloads --output-dir=build --enable-plugin=tk-inter main.py
         working-directory: .
 
       - name: 🗃️ | Upload working dir
