@@ -29,11 +29,11 @@ if platform.system() == 'Windows':
     is_windows = True
 # Check if files exist
 if not os.path.exists("proxies.txt"):
-    with open(proxies_file, "w") as f:
+    with open('proxies.txt', "w") as f:
         pass  # Create the file with an empty content
 
 if not os.path.exists("tokens.txt"):
-    with open(tokens_file, "w") as f:
+    with open('tokens.txt', "w") as f:
         pass  # Create the file with an empty content
 def insert_eula_data(pc_name=None, ip=None, hwid=None, geo=None):
     try:
