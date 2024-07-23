@@ -1,8 +1,9 @@
 import logging
 import colorlog
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 import mysql.connector
 from mysql.connector import Error
+import os
 
 # Set up colored logging
 formatter = colorlog.ColoredFormatter(
@@ -132,6 +133,26 @@ def validate_license_key():
             cursor.close()
             connection.close()
             logger.info('Database connection closed.')
+
+@app.route('/versions', methods=['GET'])
+def list_versions():
+    # Read the versions from the file
+    with open('versions.txt') as file:
+        versions = file.read().splitlines()
+    
+    # Convert the versions to the desired JSON format
+    return jsonify({'versions': sorted(versions)})
+
+@app.route('/versions/<path:filename>', methods=['GET'])
+def get_version_file(filename):
+    versions_dir = 'versions'  # Directory where your version files are stored
+    
+    # Check if the file exists in the directory
+    file_path = os.path.join(versions_dir, filename)
+    if os.path.exists(file_path):
+        return send_from_directory(versions_dir, filename + ".exe")
+    else:
+        return jsonify({"error": "File not found"}), 404
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
