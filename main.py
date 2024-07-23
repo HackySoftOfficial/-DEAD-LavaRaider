@@ -20,6 +20,7 @@ from contextlib import redirect_stdout
 import platform
 import socket
 import hwid
+import re
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
@@ -235,6 +236,8 @@ if eula != "True":
 
 WORKER_URL = 'http://lavapi.hackysoft.xyz:8000/key'
 
+key_pattern = re.compile(r'^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$')
+
 if not os.path.exists('key') or open("key").read() == '':
     with open('key', 'w') as file:
         print(title+'\n')
@@ -242,25 +245,28 @@ if not os.path.exists('key') or open("key").read() == '':
         key_invalid = True
         while key_invalid:
             key = input(Style('License key') + ' >> ')
-            data = {'key': key, 'hwid': hwid.get_hwid()}  # The license key or request body you want to check
-            headers = {
-                'Content-Type': 'application/json',  # Set Content-Type to application/json
-                'User-Agent': 'LavaRaider',
-                'LavaVersion': '1.0'  # Replace with actual LavaVersion if needed
-            }
-            response = requests.post(WORKER_URL, data=json.dumps(data), headers=headers) # {"valid":true}
-            if response.json().get("valid") == True:
-                print(Style('Success! >:3'))
-                key_invalid = False
-                license_key = key
-                file.write(license_key)
-                file.close()
+            if not key_pattern.match(key):
+                print(Style('Incorrect key >:('))
             else:
-                if response.json().get("error") == "HWID is invalid":
-                    print(Style('Invalid HWID! Please use on same device as it was bought for.'))
-                    sys.exit(0)
+                data = {'key': key, 'hwid': hwid.get_hwid()}  # The license key or request body you want to check
+                headers = {
+                    'Content-Type': 'application/json',  # Set Content-Type to application/json
+                    'User-Agent': 'LavaRaider',
+                    'LavaVersion': '1.0'  # Replace with actual LavaVersion if needed
+                }
+                response = requests.post(WORKER_URL, data=json.dumps(data), headers=headers) # {"valid":true}
+                if response.json().get("valid") == True:
+                    print(Style('Success! >:3'))
+                    key_invalid = False
+                    license_key = key
+                    file.write(license_key)
+                    file.close()
                 else:
-                    print(Style('Invalid key! >:('))
+                    if response.json().get("error") == "HWID is invalid":
+                        print(Style('Invalid HWID! Please use on same device as it was bought for.'))
+                        sys.exit(0)
+                    else:
+                        print(Style('Invalid key! >:('))
         clear()
 
 with open('key', 'r') as file:
@@ -280,23 +286,26 @@ with open('key', 'r') as file:
         key_invalid = True
         while key_invalid:
             key = input(Style('License key') + ' >> ')
-            data = {'key': key, 'hwid': hwid.get_hwid()}  # The license key or request body you want to check
-            headers = {
-                'Content-Type': 'application/json',  # Set Content-Type to application/json
-                'User-Agent': 'LavaRaider',
-                'LavaVersion': '1.0'  # Replace with actual LavaVersion if needed
-            }
-            response = requests.post(WORKER_URL, data=json.dumps(data), headers=headers) # {"valid":true}
-            if response.json().get("valid") == True:
-                print(Style('Success! >:3'))
-                key_invalid = False
-                license_key = key
+            if not key_pattern.match(key):
+                print(Style('Incorrect key >:('))
             else:
-                if response.json().get("error") == "HWID is invalid":
-                    print(Style('Invalid HWID! Please use on same device as it was bought for.'))
-                    sys.exit(0)
+                data = {'key': key, 'hwid': hwid.get_hwid()}  # The license key or request body you want to check
+                headers = {
+                    'Content-Type': 'application/json',  # Set Content-Type to application/json
+                    'User-Agent': 'LavaRaider',
+                    'LavaVersion': '1.0'  # Replace with actual LavaVersion if needed
+                }
+                response = requests.post(WORKER_URL, data=json.dumps(data), headers=headers) # {"valid":true}
+                if response.json().get("valid") == True:
+                    print(Style('Success! >:3'))
+                    key_invalid = False
+                    license_key = key
                 else:
-                    print(Style('Invalid key! >:('))
+                    if response.json().get("error") == "HWID is invalid":
+                        print(Style('Invalid HWID! Please use on same device as it was bought for.'))
+                        sys.exit(0)
+                    else:
+                        print(Style('Invalid key! >:('))
 
         with open('key', 'w') as file:
             file.write(license_key)
