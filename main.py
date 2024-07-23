@@ -26,7 +26,7 @@ import urllib
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-LAVA_VERSION = '1.0.0'
+LAVA_VERSION = '2.0.0'
 
 is_windows = False
 
